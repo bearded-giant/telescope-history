@@ -1,0 +1,179 @@
+*telescope-history.txt*        Search history for Telescope
+
+==============================================================================
+CONTENTS                                           *telescope-history-contents*
+
+  1. Introduction ......................... |telescope-history-introduction|
+  2. Requirements ......................... |telescope-history-requirements|
+  3. Installation ......................... |telescope-history-installation|
+  4. Usage ................................ |telescope-history-usage|
+  5. Configuration ....................... |telescope-history-configuration|
+  6. Key Mappings ....................... |telescope-history-mappings|
+  7. Commands ............................ |telescope-history-commands|
+  8. API ................................. |telescope-history-api|
+  9. FAQ ................................. |telescope-history-faq|
+ 10. About ............................... |telescope-history-about|
+
+==============================================================================
+1. INTRODUCTION                                *telescope-history-introduction*
+
+telescope-history is a plugin that enhances Telescope with persistent search
+history functionality. It allows you to navigate through previous searches
+using up/down arrows and navigate through results using Tab/Shift+Tab.
+
+==============================================================================
+2. REQUIREMENTS                                *telescope-history-requirements*
+
+- Neovim 0.7.0+
+- telescope.nvim (https://github.com/nvim-telescope/telescope.nvim)
+
+==============================================================================
+3. INSTALLATION                                *telescope-history-installation*
+
+Using lazy.nvim:
+>lua
+  {
+    "bearded-giant/telescope-history",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    config = true,
+  }
+<
+
+For local development:
+>lua
+  {
+    "bearded-giant/telescope-history",
+    dir = "~/dev/lua/telescope-history",
+    dev = true,
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    config = true,
+  }
+<
+
+Using packer:
+>lua
+  use {
+    "bearded-giant/telescope-history",
+    requires = {"nvim-telescope/telescope.nvim"},
+    config = function()
+      require("telescope-history").setup()
+    end
+  }
+<
+
+==============================================================================
+4. USAGE                                            *telescope-history-usage*
+
+By default, the plugin adds a key mapping for Live Grep with history:
+
+  <leader>sg - Open Live Grep with history support
+
+When using the Live Grep with history:
+
+  Up / Down   - Navigate through your search history
+  Tab         - Move to previous result (up in the list)
+  Shift+Tab   - Move to next result (down in the list)
+
+Your search history is saved automatically when you:
+- Select a result (pressing Enter)
+- Close the picker (pressing Escape)
+
+==============================================================================
+5. CONFIGURATION                              *telescope-history-configuration*
+
+You can configure the plugin by passing options to the setup function:
+
+>lua
+  require("telescope-history").setup({
+    -- Storage options
+    history_file = nil, -- Path to history file (nil for default)
+    max_entries = 100,  -- Max number of history entries to store
+    
+    -- Key mappings
+    results_mappings = {
+      next = "<S-Tab>",     -- Move to next result 
+      previous = "<Tab>",   -- Move to previous result
+    },
+    
+    -- History navigation 
+    history_mappings = {
+      next = "<Down>",      -- Newer history entry
+      previous = "<Up>",    -- Older history entry
+    },
+    
+    -- Notifications
+    show_notifications = false,  -- Set to true to enable debug notifications
+    
+    -- Auto setup keymaps
+    setup_keymaps = true,  -- Set to false to disable default keymaps
+  })
+<
+
+==============================================================================
+6. KEY MAPPINGS                                  *telescope-history-mappings*
+
+Default key mappings:
+
+  <leader>sg - Open Live Grep with history support
+
+Inside the Live Grep with history:
+
+  Up        - Navigate to older history entry
+  Down      - Navigate to newer history entry
+  Tab       - Move to previous result (up in the list)
+  Shift+Tab - Move to next result (down in the list)
+
+You can customize these mappings in the configuration.
+
+==============================================================================
+7. COMMANDS                                      *telescope-history-commands*
+
+The plugin does not add any explicit commands, but you can call the live grep
+with history functionality directly:
+
+>lua
+  require('telescope').extensions.history.live_grep()
+<
+
+==============================================================================
+8. API                                                *telescope-history-api*
+
+The plugin exposes the following API functions:
+
+>lua
+  -- Add an entry to the search history
+  require('telescope').extensions.history.history.add_to_history(entry)
+  
+  -- Get the current search history
+  local history = require('telescope').extensions.history.history.get_history()
+  
+  -- Clear the search history
+  require('telescope').extensions.history.history.clear_history()
+<
+
+==============================================================================
+9. FAQ                                                *telescope-history-faq*
+
+Q: Where is my search history stored?
+A: By default, in ~/.local/share/nvim/telescope-history/search-history.json
+
+Q: Can I share history between different Neovim instances?
+A: Yes, the history is stored in a file and loaded each time you start Neovim.
+
+Q: How many history entries are stored?
+A: By default, the most recent 100 entries. You can change this with the
+   max_entries configuration option.
+
+==============================================================================
+10. ABOUT                                            *telescope-history-about*
+
+telescope-history is maintained by bearded-giant and contributors.
+
+GitHub: https://github.com/bearded-giant/telescope-history
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:

@@ -19,7 +19,7 @@ M.options = {
   },
   
   -- Notifications
-  show_notifications = true,
+  show_notifications = false,  -- Debug notifications disabled by default
   
   -- Auto setup keymaps
   setup_keymaps = true,

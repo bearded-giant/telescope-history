@@ -70,7 +70,7 @@ require("telescope-history").setup({
   },
   
   -- Notifications
-  show_notifications = true,
+  show_notifications = false,  -- Set to true to enable debug notifications
 })
 ```
 
